@@ -28,7 +28,7 @@ protected:
      */
     void paintEvent(QPaintEvent *){
         QPainter painter(this);
-        painter.drawImage(40,40,image);
+        painter.drawImage(80,80,image);
     }
 
 };
