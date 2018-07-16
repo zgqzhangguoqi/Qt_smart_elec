@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
      ui->setupUi(this);
     //更改默认窗口大小  800*600
-    this->resize( QSize( 1000, 600 ));
+    this->resize( QSize( 1000, 650 ));
     image = QImage(600,300,QImage::Format_RGB32);  //画布的初始化大小设为600*300，使用32位颜色
     QColor backColor = qRgb(255,255,255);    //画布初始化背景色使用白色
     image.fill(backColor);//对画布进行填充

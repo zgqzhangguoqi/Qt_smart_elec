@@ -32,7 +32,7 @@ protected:
      */
     void paintEvent(QPaintEvent *){
         QPainter painter(this);
-        painter.drawImage(10,90,image);
+        painter.drawImage(10,100,image);
     }
 
 private slots:
