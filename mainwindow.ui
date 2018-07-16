@@ -9,15 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>979</width>
-    <height>626</height>
+    <width>996</width>
+    <height>693</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>智能家电系统</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resouses.qrc">
+   <iconset>
     <normaloff>:/new/prefix1/onepage (1).png</normaloff>:/new/prefix1/onepage (1).png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -29,7 +29,7 @@
      <rect>
       <x>380</x>
       <y>0</y>
-      <width>31</width>
+      <width>41</width>
       <height>51</height>
      </rect>
     </property>
@@ -37,7 +37,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="resouses.qrc">:/new/prefix1/onepage (1).png</pixmap>
+     <pixmap>:/new/prefix1/onepage (1).png</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="lb_title">
@@ -53,6 +53,8 @@
      <font>
       <family>新宋体</family>
       <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -62,16 +64,16 @@
    <widget class="QLabel" name="Time_Counter">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>10</y>
-      <width>241</width>
-      <height>31</height>
+      <x>400</x>
+      <y>570</y>
+      <width>311</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Times New Roman</family>
-      <pointsize>11</pointsize>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="text">
@@ -336,22 +338,22 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>400</y>
-      <width>81</width>
+      <x>0</x>
+      <y>410</y>
+      <width>121</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>宋体</family>
-      <pointsize>12</pointsize>
+      <pointsize>16</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>控制台</string>
+     <string>【控制台】</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="asdio_auto">
@@ -376,8 +378,8 @@
    <widget class="QComboBox" name="combox_fan">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>450</y>
+      <x>280</x>
+      <y>510</y>
       <width>81</width>
       <height>31</height>
      </rect>
@@ -386,8 +388,8 @@
    <widget class="QLabel" name="lb_fan_">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>450</y>
+      <x>180</x>
+      <y>510</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -405,8 +407,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>530</y>
+      <x>180</x>
+      <y>450</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -427,8 +429,8 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>520</y>
+      <x>280</x>
+      <y>440</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -446,8 +448,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>520</y>
+      <x>390</x>
+      <y>440</y>
       <width>71</width>
       <height>41</height>
      </rect>
@@ -462,13 +464,117 @@
      <string>更改</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>480</y>
+      <width>91</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="text">
+     <string>* 未选中时默认为手动模式</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>宋体</family>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>【显示台】</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>470</y>
+      <width>81</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>C:/Users/Administrator/Desktop/Qt_smart_elec-master/Qt_smart_elec-master/er.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>430</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>扫码下载Android手机客户端</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>510</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>宋体</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>风扇定时：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="combox_time">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>510</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>979</width>
+     <width>996</width>
      <height>23</height>
     </rect>
    </property>
@@ -484,8 +590,6 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="resouses.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
