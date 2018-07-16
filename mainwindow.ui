@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>739</width>
-    <height>333</height>
+    <width>890</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
    <widget class="QLabel" name="logo">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>360</x>
       <y>0</y>
       <width>31</width>
       <height>51</height>
@@ -37,7 +37,7 @@
    <widget class="QLabel" name="title">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>400</x>
       <y>10</y>
       <width>171</width>
       <height>31</height>
@@ -53,13 +53,32 @@
      <string>智能家电控制台</string>
     </property>
    </widget>
+   <widget class="QLabel" name="Time_Counter">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>10</y>
+      <width>241</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>739</width>
+     <width>890</width>
      <height>23</height>
     </rect>
    </property>

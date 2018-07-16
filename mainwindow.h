@@ -5,6 +5,10 @@
 #include<QMouseEvent>
 #include<QPaintEvent>
 #include<QtGui>
+#include<QLabel>
+#include<QDateTime>
+#include<QTimer>
+#include<QString>
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +35,8 @@ protected:
         painter.drawImage(80,80,image);
     }
 
+private slots:
+    void timerUpdate(void);
 };
 
 #endif // MAINWINDOW_H

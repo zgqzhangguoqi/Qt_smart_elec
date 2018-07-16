@@ -2,20 +2,30 @@
 #include "ui_mainwindow.h"
 #include<cstdlib>
 #include<ctime>
+#include<QLabel>
+#include<QDateTime>
+#include<QTimer>
+#include<QString>
 #define inf 0x3f3f3f3f
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+
     //更改默认窗口大小  800*600
-    this->resize( QSize( 1000, 600 ));
+    this->resize( QSize( 1200, 600 ));
     image = QImage(600,300,QImage::Format_RGB32);  //画布的初始化大小设为600*300，使用32位颜色
     QColor backColor = qRgb(255,255,255);    //画布初始化背景色使用白色
     image.fill(backColor);//对画布进行填充
     //开始绘图
+
     Paint();
+    //显示系统时间
+    QTimer *timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    timer->start(1000);
+    ui->setupUi(this);
 
 }
 
@@ -132,8 +142,15 @@ void MainWindow::Paint()
     }
 }
 
+void MainWindow::timerUpdate(void)
+{
+    QDateTime time = QDateTime::currentDateTime();
+    QString str = time.toString("yyyy-MM-dd hh:mm:ss dddd");
+    ui->Time_Counter->setText(str);
+}
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
