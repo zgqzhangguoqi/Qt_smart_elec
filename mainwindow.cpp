@@ -7,7 +7,8 @@
 #include<QTimer>
 #include<QString>
 #define inf 0x3f3f3f3f
-
+int a=0,b=0,c=0;
+bool auto_mod=true,fan=false;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -22,13 +23,65 @@ MainWindow::MainWindow(QWidget *parent) :
     //开始绘图
 
     Paint();
-    //显示系统时间
+
+    /*
+     * 系统时间显示
+     * 1s通过connect刷新一遍数据
+     * 防止刚启动时显示失效
+     */
+    QDateTime time = QDateTime::currentDateTime();
+    QString str = time.toString("yyyy-MM-dd hh:mm:ss dddd");
+    ui->Time_Counter->setText(str);
+
     QTimer *timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
     timer->start(1000);
 
-}
+    /*
+     * 温度显示屏
+     * 1s通过connect刷新一遍数据
+     * 防止刚启动时显示失效
+     */
+     ui->lcd_temp->display(44);
+     QTimer *time_lcd_temp = new QTimer(this);
+     this->connect(time_lcd_temp, SIGNAL(timeout()), this, SLOT(on_lcd_temp_listen()));
+     time_lcd_temp->start(1000);
 
+     /*
+      * 温度显示屏
+      * 1s通过connect刷新一遍数据
+      * 防止刚启动时显示失效
+      */
+      ui->lcd_hum->display(44);
+      QTimer *time_lcd_hum = new QTimer(this);
+      this->connect(time_lcd_hum, SIGNAL(timeout()), this, SLOT(on_lcd_hum_listen()));
+      time_lcd_hum->start(1000);
+
+      /*
+       * 光强显示屏
+       * 1s通过connect刷新一遍数据
+       * 防止刚启动时显示失效
+       */
+       ui->edit_sun->setText("22");
+       QTimer *time_edit_sun = new QTimer(this);
+       this->connect(time_edit_sun, SIGNAL(timeout()), this, SLOT(on_edit_sun_listen()));
+       time_edit_sun->start(1000);
+       /*
+        *  默认自动模式，风扇不可调
+        */
+       ui->lb_fan_->setEnabled(false);
+       ui->combox_fan->setEnabled(false);
+       ui->lb_time_fan->setEnabled(false);
+       ui->combox_time->setEnabled(false);
+
+       //combox设定监听
+       connect(ui->combox_fan,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_combox_fan_set()));
+       connect(ui->combox_time,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_combox_time_listen()));
+      ui->edit_fan->setText("关闭");
+      ui->edit_auto->setText("开");
+
+}
+     //温湿度显示画图
 void MainWindow::Paint()
 {
     QPainter painter(&image);
@@ -142,6 +195,7 @@ void MainWindow::Paint()
     }
 }
 
+//更新系统时间
 void MainWindow::timerUpdate(void)
 {
     QDateTime time = QDateTime::currentDateTime();
@@ -154,3 +208,107 @@ MainWindow::~MainWindow()
 }
 
 
+//温度显示屏刷新
+void MainWindow::on_lcd_temp_listen()
+{
+    //QDateTime time = QDateTime::currentDateTime();
+   // QString str = time.toString("ss");
+    if(b==0){
+        ui->lcd_temp->display(90);
+        b=1;
+    }else
+    {
+        ui->lcd_temp->display(21);
+        b=0;
+    }
+
+}
+
+void MainWindow::on_lcd_hum_listen()
+{
+    if(a==0){
+        ui->lcd_hum->display(98);
+        a=1;
+    }else
+    {
+        ui->lcd_hum->display(13);
+        a=0;
+    }
+}
+
+void MainWindow::on_edit_sun_listen()
+{
+    if(c==0){
+        ui->edit_sun->setText("45");
+        c=1;
+    }else
+    {
+        ui->edit_sun->setText("89");
+        c=0;
+    }
+}
+
+void MainWindow::on_radio_auto_clicked()
+{
+    auto_mod= ui->radio_auto->isChecked();
+    if(auto_mod){
+        ui->lb_fan_->setEnabled(false);
+        ui->combox_fan->setEnabled(false);
+        ui->lb_time_fan->setEnabled(false);
+        ui->combox_time->setEnabled(false);
+        ui->btn_temp->setEnabled(true);
+        ui->spinBox_temp->setEnabled(true);
+        ui->lb_set_temp->setEnabled(true);
+        ui->edit_auto->setText("开");
+    }else{
+        ui->lb_fan_->setEnabled(true);
+        ui->combox_fan->setEnabled(true);
+        ui->lb_time_fan->setEnabled(true);
+        if(fan){
+
+            ui->combox_time->setEnabled(true);
+        }
+        else{
+
+            ui->combox_time->setEnabled(false);
+        }
+        ui->btn_temp->setEnabled(false);
+        ui->spinBox_temp->setEnabled(false);
+        ui->lb_set_temp->setEnabled(false);
+        ui->edit_auto->setText("关");
+
+        }
+}
+
+void MainWindow::on_combox_fan_set()
+{
+    if(ui->combox_fan->currentIndex()==0)           {
+                                                      ui->edit_fan->setText("关闭");
+                                                     ui->combox_time->setEnabled(false);
+                                                     fan=false;
+                                                     }
+        else if(ui->combox_fan->currentIndex()==1)   {
+                                                      ui->edit_fan->setText("低速");
+                                                      ui->combox_time->setEnabled(true);
+                                                      fan=true;
+                                                     }
+        else if(ui->combox_fan->currentIndex()==2)  {
+                                                      ui->edit_fan->setText("中速");
+                                                      ui->combox_time->setEnabled(true);
+                                                       fan=true;
+                                                     }
+        else if(ui->combox_fan->currentIndex()==3)   {
+                                                     ui->edit_fan->setText("高速");
+                                                      ui->combox_time->setEnabled(true);
+                                                       fan=true;
+                                                     }
+
+}
+
+void MainWindow::on_combox_time_listen()
+{
+        if(ui->combox_time->currentIndex()==0)          ui->edit_fan->setText("低速");
+            else if(ui->combox_time->currentIndex()==1) ui->edit_fan->setText("低速");
+            else if(ui->combox_time->currentIndex()==2) ui->edit_fan->setText("低速");
+            else if(ui->combox_time->currentIndex()==3) ui->edit_fan->setText("低速");
+}

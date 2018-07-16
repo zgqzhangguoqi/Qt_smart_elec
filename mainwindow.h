@@ -32,11 +32,17 @@ protected:
      */
     void paintEvent(QPaintEvent *){
         QPainter painter(this);
-        painter.drawImage(10,100,image);
+        painter.drawImage(40,100,image);
     }
 
 private slots:
     void timerUpdate(void);
+    void on_lcd_temp_listen();
+    void on_lcd_hum_listen();
+    void on_edit_sun_listen();
+    void on_radio_auto_clicked();
+    void on_combox_fan_set();
+    void on_combox_time_listen();
 };
 
 #endif // MAINWINDOW_H
