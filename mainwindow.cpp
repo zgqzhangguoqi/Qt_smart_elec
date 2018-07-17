@@ -30,9 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
      ui->setupUi(this);
     //更改默认窗口大小  1000*650
     this->resize( QSize( 1000, 650 ));
-
-
-
     image = QImage(600,300,QImage::Format_RGB32);  //画布的初始化大小设为600*300，使用32位颜色
     QColor backColor = qRgb(255,255,255);    //画布初始化背景色使用白色
     image.fill(backColor);//对画布进行填充
@@ -42,7 +39,15 @@ MainWindow::MainWindow(QWidget *parent) :
      */
     QTimer *timer1 = new QTimer(this);
     connect(timer1,SIGNAL(timeout()),this,SLOT(update_cap()));
-    timer1->start(1000);
+    timer1->start(500);
+
+    /*
+     *显示屏模拟数据
+     */
+//    for(int c=0;c<10;c++){
+//        false_data[c];
+
+//    }
     // m_nTimerID = this->startTimer(TIMER_TIMEOUT);
     //开始绘图
      Paint();
@@ -116,6 +121,9 @@ MainWindow::MainWindow(QWidget *parent) :
      //温湿度显示画图
 void MainWindow::Paint()
 {
+    //刷新画布，使画布默认白色
+    QColor backColor = qRgb(255,255,255);    //画布初始化背景色使用白色
+    image.fill(backColor);//对画布进行填充
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing, true);//设置反锯齿模式，好看一点
 
@@ -144,30 +152,51 @@ void MainWindow::Paint()
 //    for(int i=0;i<n;i++)
 //        a[i]=rand()%40+20;
 
-    for(int i=0;i<p;i++)
-    {
-        sum+=temp_data[i];
-        if(temp_data[i]>_ma){
-            _ma=temp_data[i];
-            maxpos=i;
-        }
-        if(temp_data[i]<_mi){
-            _mi=temp_data[i];
-            minpos=i;
-        }
-    }
-    ave=sum/p;//平均数
+//    if(p<=30){
+//        for(int i=0;i<p;i++)
+//        {
+//            //sum+=temp_data[i];
+//            if(temp_data[i]>_ma){
+//                _ma=temp_data[i];
+//                maxpos=i;
+//            }
+//            if(temp_data[i]<_mi){
+//                _mi=temp_data[i];
+//                minpos=i;
+//            }
+//        }
+//    }else{
+//            for(int i=0;i<30;i++)
+//            {
+//                //sum+=temp_data[i];
+//                if(temp_data[i]>_ma){
+//                    _ma=temp_data[i];
+//                    maxpos=i;
+//                }
+//                if(temp_data[i]<_mi){
+//                    _mi=temp_data[i];
+//                    minpos=i;
+//                }
+//            }
+//    }
+    //ave=sum/p;//平均数
 
-    double kx=(double)width/(n-1); //x轴的系数
+    double kx=(double)width/(10-1); //x轴的系数
     double ky=(double)height/_ma;  //y方向的比例系数
     QPen pen,penPoint;
     pen.setColor(Qt::black);
     pen.setWidth(2);               //折线的宽度
 
     penPoint.setColor(Qt::blue);
-    penPoint.setWidth(5);
+    penPoint.setWidth(6);
     //画点算法
-    for(int i=0;i<p-1;i++)
+    int v=p;
+    if(p<10){
+        v=p;
+    }else{
+        v=10;
+    }
+    for(int i=0;i<v-1;i++)
     {
         //由于y轴是倒着的，所以y轴坐标要pointy-a[i]*ky 其中ky为比例系数
         painter.setPen(pen);//黑色笔用于连线
@@ -175,7 +204,7 @@ void MainWindow::Paint()
         painter.setPen(penPoint);//蓝色的笔，用于标记各个点
         painter.drawPoint(pointx+kx*i,pointy-temp_data[i]*ky);
     }
-    painter.drawPoint(pointx+kx*(p-1),pointy-temp_data[p-1]*ky);//绘制最后一个点
+    painter.drawPoint(pointx+kx*(v-1),pointy-temp_data[v-1]*ky);//绘制最后一个点
 
     //绘制平均线
 //    QPen penAve;
@@ -186,19 +215,19 @@ void MainWindow::Paint()
 //    painter.drawLine(pointx,pointy-ave*ky,pointx+width,pointy-ave*ky);
 
     //绘制最大值和最小值
-    QPen penMaxMin;
-    penMaxMin.setColor(Qt::darkGreen);//暗绿色
-    painter.setPen(penMaxMin);
-    painter.drawText(pointx+kx*maxpos-kx,pointy-temp_data[maxpos]*ky-5,
-                     "最大值"+QString::number(_ma));
-    painter.drawText(pointx+kx*minpos-kx,pointy-temp_data[minpos]*ky+15,
-                     "最小值"+QString::number(_mi));
+//    QPen penMaxMin;
+//    penMaxMin.setColor(Qt::darkGreen);//暗绿色
+//    painter.setPen(penMaxMin);
+//    painter.drawText(pointx+kx*maxpos-kx,pointy-temp_data[maxpos]*ky-5,
+//                     "最大值"+QString::number(_ma));
+//    painter.drawText(pointx+kx*minpos-kx,pointy-temp_data[minpos]*ky+15,
+//                     "最小值"+QString::number(_mi));
 
-    penMaxMin.setColor(Qt::red);
-    penMaxMin.setWidth(7);
-    painter.setPen(penMaxMin);
-    painter.drawPoint(pointx+kx*maxpos,pointy-temp_data[maxpos]*ky);//标记最大值点
-    painter.drawPoint(pointx+kx*minpos,pointy-temp_data[minpos]*ky);//标记最小值点
+//    penMaxMin.setColor(Qt::red);
+//    penMaxMin.setWidth(7);
+//    painter.setPen(penMaxMin);
+//    painter.drawPoint(pointx+kx*maxpos,pointy-temp_data[maxpos]*ky);//标记最大值点
+//    painter.drawPoint(pointx+kx*minpos,pointy-temp_data[minpos]*ky);//标记最小值点
 
 
     //绘制刻度线
@@ -207,12 +236,12 @@ void MainWindow::Paint()
     penDegree.setWidth(2);
     painter.setPen(penDegree);
     //画上x轴刻度线
-    for(int i=0;i<10;i++)//分成10份
+    for(int i=0;i<9;i++)//分成10份
     {
         //选取合适的坐标，绘制一段长度为4的直线，用于表示刻度
-        painter.drawLine(pointx+(i+1)*width/10,pointy,pointx+(i+1)*width/10,pointy+4);
-        painter.drawText(pointx+(i+0.65)*width/10,
-                         pointy+10,QString::number((int)((i+1)*((double)n/10))));
+        painter.drawLine(pointx+(i+1)*width/9,pointy,pointx+(i+1)*width/9,pointy+4);
+        painter.drawText(pointx+(i+0.65)*width/9,
+                         pointy+10,QString::number((int)((i+1)*((double)10/10))));
     }
     //y轴刻度线
     double _maStep=(double)_ma/10;//y轴刻度间隔需根据最大值来表示
@@ -361,19 +390,19 @@ void MainWindow::on_btn_temp_clicked()
 //}
 void MainWindow::update_cap(){
     p++;
-    this->update();
-    if(p>=30){
+    if(p>=10){
       {
-       for(int a=p-1;a>0;a--){
-        temp_data[a+1]=temp_data[a];
+       for(int a=0;a<10;a++){
+        temp_data[a]=temp_data[a+1];
        }
-        temp_data[p]=p;
+        temp_data[9]=false_data[p%10];
       }
     }else{
-      temp_data[p]=p;
+      temp_data[p]=false_data[p%10];
 
     }
      Paint();
+     this->update();
 
 }
 

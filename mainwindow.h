@@ -22,7 +22,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
      void Paint();
-     int temp_data[30]={0};
+     int temp_data[10]={0};
+     int false_data[10]={28,39,12,8,39,28,19,39,30,26};
      //virtual void timerEvent( QTimerEvent *event);
 
 private:
