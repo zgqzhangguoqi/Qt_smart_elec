@@ -6,9 +6,11 @@
 #include<QDateTime>
 #include<QTimer>
 #include<QString>
+#include<QSpinBox>
 #define inf 0x3f3f3f3f
-int a=0,b=0,c=0;
+int a=0,b=0,c=0,int_spinBox_temp=0;
 bool auto_mod=true,fan=false;
+QSpinBox *spinbox_temp;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -73,6 +75,14 @@ MainWindow::MainWindow(QWidget *parent) :
        ui->combox_fan->setEnabled(false);
        ui->lb_time_fan->setEnabled(false);
        ui->combox_time->setEnabled(false);
+
+       /*
+        *初始化温度设定spinBox
+        */
+       ui->spinBox_temp->setRange(15,30);
+       ui->spinBox_temp->setAlignment(Qt::AlignCenter);
+       //ui->spinBox_temp-> setButtonSymbols(QAbstractSpinBox::NoButtons);//去掉后面的两个按钮
+
 
        //combox设定监听
        connect(ui->combox_fan,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_combox_fan_set()));
@@ -311,4 +321,11 @@ void MainWindow::on_combox_time_listen()
             else if(ui->combox_time->currentIndex()==1) ui->edit_fan->setText("低速");
             else if(ui->combox_time->currentIndex()==2) ui->edit_fan->setText("低速");
             else if(ui->combox_time->currentIndex()==3) ui->edit_fan->setText("低速");
+}
+
+void MainWindow::on_btn_temp_clicked()
+{
+    int_spinBox_temp=ui->spinBox_temp->value();
+    QString str=QString::number(int_spinBox_temp,10); //str="3f";
+    ui->label_4->setText(str);
 }

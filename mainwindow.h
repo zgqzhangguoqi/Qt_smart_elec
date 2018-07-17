@@ -43,6 +43,7 @@ private slots:
     void on_radio_auto_clicked();
     void on_combox_fan_set();
     void on_combox_time_listen();
+    void on_btn_temp_clicked();
 };
 
 #endif // MAINWINDOW_H
