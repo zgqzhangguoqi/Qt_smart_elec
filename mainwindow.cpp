@@ -16,9 +16,9 @@ int a=0,b=0,c=0,int_spinBox_temp=0,p=0;
 int n=30;       //n为数据个数
 double sum=0;
 double ave=0;
-int _ma=0;      //数组里的最大值
+int _ma=40;      //数组里的最大值
 int _mi=0;
-
+int maxpos=0,minpos=0;   //最大最小点
 bool auto_mod=true,fan=false;
 
 QSpinBox *spinbox_temp;
@@ -143,8 +143,8 @@ void MainWindow::Paint()
 
 //    for(int i=0;i<n;i++)
 //        a[i]=rand()%40+20;
-    int maxpos=0,minpos=0;   //最大最小点
-    for(int i=0;i<n;i++)
+
+    for(int i=0;i<p;i++)
     {
         sum+=temp_data[i];
         if(temp_data[i]>_ma){
@@ -156,7 +156,7 @@ void MainWindow::Paint()
             minpos=i;
         }
     }
-    ave=sum/n;//平均数
+    ave=sum/p;//平均数
 
     double kx=(double)width/(n-1); //x轴的系数
     double ky=(double)height/_ma;  //y方向的比例系数
@@ -167,7 +167,7 @@ void MainWindow::Paint()
     penPoint.setColor(Qt::blue);
     penPoint.setWidth(5);
     //画点算法
-    for(int i=0;i<n-1;i++)
+    for(int i=0;i<p-1;i++)
     {
         //由于y轴是倒着的，所以y轴坐标要pointy-a[i]*ky 其中ky为比例系数
         painter.setPen(pen);//黑色笔用于连线
@@ -175,15 +175,15 @@ void MainWindow::Paint()
         painter.setPen(penPoint);//蓝色的笔，用于标记各个点
         painter.drawPoint(pointx+kx*i,pointy-temp_data[i]*ky);
     }
-    painter.drawPoint(pointx+kx*(n-1),pointy-temp_data[n-1]*ky);//绘制最后一个点
+    painter.drawPoint(pointx+kx*(p-1),pointy-temp_data[p-1]*ky);//绘制最后一个点
 
     //绘制平均线
-    QPen penAve;
-    penAve.setColor(Qt::red);//选择红色
-    penAve.setWidth(2);
-    penAve.setStyle(Qt::DotLine);//线条类型为虚线
-    painter.setPen(penAve);
-    painter.drawLine(pointx,pointy-ave*ky,pointx+width,pointy-ave*ky);
+//    QPen penAve;
+//    penAve.setColor(Qt::red);//选择红色
+//    penAve.setWidth(2);
+//    penAve.setStyle(Qt::DotLine);//线条类型为虚线
+//    painter.setPen(penAve);
+//    painter.drawLine(pointx,pointy-ave*ky,pointx+width,pointy-ave*ky);
 
     //绘制最大值和最小值
     QPen penMaxMin;
@@ -361,9 +361,19 @@ void MainWindow::on_btn_temp_clicked()
 //}
 void MainWindow::update_cap(){
     p++;
-    temp_data[p]=rand()%40+20;
     this->update();
-    Paint();
+    if(p>=30){
+      {
+       for(int a=p-1;a>0;a--){
+        temp_data[a+1]=temp_data[a];
+       }
+        temp_data[p]=p;
+      }
+    }else{
+      temp_data[p]=p;
+
+    }
+     Paint();
 
 }
 
