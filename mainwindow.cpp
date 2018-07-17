@@ -6,10 +6,21 @@
 #include<QDateTime>
 #include<QTimer>
 #include<QString>
+#include<QDebug>
+#include <QTimerEvent>
+#define TIMER_TIMEOUT   (5*1000)
 #include<QSpinBox>
 #define inf 0x3f3f3f3f
-int a=0,b=0,c=0,int_spinBox_temp=0;
+int a=0,b=0,c=0,int_spinBox_temp=0,p=0;
+//获得数据中最大值和最小值、平均数
+int n=30;       //n为数据个数
+double sum=0;
+double ave=0;
+int _ma=0;      //数组里的最大值
+int _mi=0;
+
 bool auto_mod=true,fan=false;
+
 QSpinBox *spinbox_temp;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,14 +28,25 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
      ui->setupUi(this);
-    //更改默认窗口大小  800*600
+    //更改默认窗口大小  1000*650
     this->resize( QSize( 1000, 650 ));
+
+
+
     image = QImage(600,300,QImage::Format_RGB32);  //画布的初始化大小设为600*300，使用32位颜色
     QColor backColor = qRgb(255,255,255);    //画布初始化背景色使用白色
     image.fill(backColor);//对画布进行填充
-    //开始绘图
 
-    Paint();
+    /*
+     *初始化定时
+     */
+    QTimer *timer1 = new QTimer(this);
+    connect(timer1,SIGNAL(timeout()),this,SLOT(update_cap()));
+    timer1->start(1000);
+    // m_nTimerID = this->startTimer(TIMER_TIMEOUT);
+    //开始绘图
+     Paint();
+
 
     /*
      * 系统时间显示
@@ -110,27 +132,27 @@ void MainWindow::Paint()
 
     srand(time(NULL));
 
-    //获得数据中最大值和最小值、平均数
-    int n=30;       //n为数据个数
-    double sum=0;
-    double ave=0;
-    int _ma=0;      //数组里的最大值
-    int _mi=inf;
+//    //获得数据中最大值和最小值、平均数
+//    int n=30;       //n为数据个数
+//    double sum=0;
+//    double ave=0;
+//    int _ma=0;      //数组里的最大值
+//    int _mi=inf;
 
-    int a[n];//数据储存在数组a中，大小为n
+    //int a[n];//数据储存在数组a中，大小为n
 
-    for(int i=0;i<n;i++)
-        a[i]=rand()%40+20;
+//    for(int i=0;i<n;i++)
+//        a[i]=rand()%40+20;
     int maxpos=0,minpos=0;   //最大最小点
     for(int i=0;i<n;i++)
     {
-        sum+=a[i];
-        if(a[i]>_ma){
-            _ma=a[i];
+        sum+=temp_data[i];
+        if(temp_data[i]>_ma){
+            _ma=temp_data[i];
             maxpos=i;
         }
-        if(a[i]<_mi){
-            _mi=a[i];
+        if(temp_data[i]<_mi){
+            _mi=temp_data[i];
             minpos=i;
         }
     }
@@ -149,11 +171,11 @@ void MainWindow::Paint()
     {
         //由于y轴是倒着的，所以y轴坐标要pointy-a[i]*ky 其中ky为比例系数
         painter.setPen(pen);//黑色笔用于连线
-        painter.drawLine(pointx+kx*i,pointy-a[i]*ky,pointx+kx*(i+1),pointy-a[i+1]*ky);
+        painter.drawLine(pointx+kx*i,pointy-temp_data[i]*ky,pointx+kx*(i+1),pointy-temp_data[i+1]*ky);
         painter.setPen(penPoint);//蓝色的笔，用于标记各个点
-        painter.drawPoint(pointx+kx*i,pointy-a[i]*ky);
+        painter.drawPoint(pointx+kx*i,pointy-temp_data[i]*ky);
     }
-    painter.drawPoint(pointx+kx*(n-1),pointy-a[n-1]*ky);//绘制最后一个点
+    painter.drawPoint(pointx+kx*(n-1),pointy-temp_data[n-1]*ky);//绘制最后一个点
 
     //绘制平均线
     QPen penAve;
@@ -167,16 +189,16 @@ void MainWindow::Paint()
     QPen penMaxMin;
     penMaxMin.setColor(Qt::darkGreen);//暗绿色
     painter.setPen(penMaxMin);
-    painter.drawText(pointx+kx*maxpos-kx,pointy-a[maxpos]*ky-5,
+    painter.drawText(pointx+kx*maxpos-kx,pointy-temp_data[maxpos]*ky-5,
                      "最大值"+QString::number(_ma));
-    painter.drawText(pointx+kx*minpos-kx,pointy-a[minpos]*ky+15,
+    painter.drawText(pointx+kx*minpos-kx,pointy-temp_data[minpos]*ky+15,
                      "最小值"+QString::number(_mi));
 
     penMaxMin.setColor(Qt::red);
     penMaxMin.setWidth(7);
     painter.setPen(penMaxMin);
-    painter.drawPoint(pointx+kx*maxpos,pointy-a[maxpos]*ky);//标记最大值点
-    painter.drawPoint(pointx+kx*minpos,pointy-a[minpos]*ky);//标记最小值点
+    painter.drawPoint(pointx+kx*maxpos,pointy-temp_data[maxpos]*ky);//标记最大值点
+    painter.drawPoint(pointx+kx*minpos,pointy-temp_data[minpos]*ky);//标记最小值点
 
 
     //绘制刻度线
@@ -329,3 +351,19 @@ void MainWindow::on_btn_temp_clicked()
     QString str=QString::number(int_spinBox_temp,10); //str="3f";
     ui->label_4->setText(str);
 }
+//定时器超时处理
+//void MainWindow::timerEvent(QTimerEvent *event)
+//{
+
+//    qDebug()<<"定时结束\n";
+//    //killTimer(m_nTimerID);
+//    Paint();
+//}
+void MainWindow::update_cap(){
+    p++;
+    temp_data[p]=rand()%40+20;
+    this->update();
+    Paint();
+
+}
+

@@ -21,18 +21,23 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+     void Paint();
+     int temp_data[30]={0};
+     //virtual void timerEvent( QTimerEvent *event);
 
 private:
     Ui::MainWindow *ui;
     QImage image;
-     void Paint();
+
+     int m_nTimerID;
 protected:
     /*添加自定义方法，paintEvent（）
       drawImage：设置显示位置
      */
     void paintEvent(QPaintEvent *){
-        QPainter painter(this);
-        painter.drawImage(40,100,image);
+
+       QPainter painter(this);
+       painter.drawImage(40,100,image);
     }
 
 private slots:
@@ -44,6 +49,7 @@ private slots:
     void on_combox_fan_set();
     void on_combox_time_listen();
     void on_btn_temp_clicked();
+    void update_cap();
 };
 
 #endif // MAINWINDOW_H
